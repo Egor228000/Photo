@@ -41,6 +41,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.launch
 
 @Composable
@@ -91,11 +92,11 @@ fun Image(navController: NavController, kartinka: String){
 
             val state = painter.state
             if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-                CircularProgressIndicator(
-                    color = Color.White,
-                    backgroundColor = Color.Black,
-                    strokeWidth = 5.dp
-                )
+                Box(modifier = Modifier.shimmer()
+                    .background(Color.Gray)
+                ){
+
+                }
             } else {
                 SubcomposeAsyncImageContent()
             }

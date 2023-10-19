@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -50,6 +51,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import com.valentinilk.shimmer.shimmer
 import java.net.URLEncoder
 
 data class searchCarding(val navController: NavController.Companion, val kartinka: String, val id: String)
@@ -174,12 +176,17 @@ fun Search(navController: NavController){
                         .padding(10.dp)
                         .clickable { navController.navigate("image/${URLEncoder.encode(item.kartinka, "UTF-8")}") }
 
+
                 )
                 {
 
                     val state = painter.state
                     if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-                        CircularProgressIndicator(color = Color.White, backgroundColor = Color.Black, strokeWidth = 5.dp)
+                        Box(modifier = Modifier.shimmer()
+                            .background(Color.Gray)
+                        ){
+
+                        }
                     } else {
                         SubcomposeAsyncImageContent()
                     }

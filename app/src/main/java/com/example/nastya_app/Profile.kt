@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -45,6 +46,9 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import com.valentinilk.shimmer.ShimmerBounds
+import com.valentinilk.shimmer.rememberShimmer
+import com.valentinilk.shimmer.shimmer
 import java.net.URLEncoder
 
 @Composable
@@ -70,13 +74,14 @@ fun Profile(navController: NavController) {
 
             ) {
 
+
                 val state = painter.state
                 if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-                    CircularProgressIndicator(
-                        color = Color.White,
-                        backgroundColor = Color.Black,
-                        strokeWidth = 5.dp
-                    )
+                    Box(modifier = Modifier.shimmer()
+                        .background(Color.Gray)
+                       ){
+
+                    }
                 } else {
                     SubcomposeAsyncImageContent()
                 }
@@ -126,7 +131,8 @@ fun Profile(navController: NavController) {
 
             }
             OutlinedButton(onClick = { navController.navigate("chats")},
-                modifier = Modifier.offset(y = -15.dp)
+                modifier = Modifier
+                    .offset(y = -15.dp)
                     .fillMaxWidth(1f)
                     .padding(16.dp)
                     .height(52.dp)
@@ -243,17 +249,18 @@ fun SizeeCard(navController: NavController, kartinka: String, size_height: Dp) {
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .width(167.dp)
-            .height(size_height).clickable { navController.navigate("image/${URLEncoder.encode(kartinka, "UTF-8")}") }
+            .height(size_height)
+            .clickable { navController.navigate("image/${URLEncoder.encode(kartinka, "UTF-8")}") }
 
     ) {
 
         val state = painter.state
         if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-            CircularProgressIndicator(
-                color = Color.White,
-                backgroundColor = Color.Black,
-                strokeWidth = 5.dp
-            )
+            Box(modifier = Modifier.shimmer()
+                .background(Color.Gray)
+            ){
+
+            }
         } else {
             SubcomposeAsyncImageContent()
         }

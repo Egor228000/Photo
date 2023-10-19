@@ -55,6 +55,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import com.valentinilk.shimmer.shimmer
 import java.net.URLEncoder
 
 @Composable
@@ -235,11 +236,11 @@ fun SizeCard(navController: NavController, kartinka: String, size_height: Dp){
 
         val state = painter.state
         if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-            CircularProgressIndicator(
-                color = Color.White,
-                backgroundColor = Color.Black,
-                strokeWidth = 5.dp
-            )
+            Box(modifier = Modifier.shimmer()
+                .background(Color.Gray)
+            ){
+
+            }
         } else {
             SubcomposeAsyncImageContent()
         }
@@ -263,7 +264,11 @@ fun PostCard(navController: NavController, kartinka: String, avatar: String, nam
             }
             val state = painter.state
             if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-                CircularProgressIndicator(color = MaterialTheme.colors.primary)
+                Box(modifier = Modifier.shimmer()
+                    .background(Color.Gray)
+                ){
+
+                }
             } else {
                 SubcomposeAsyncImageContent()
             }
@@ -285,7 +290,11 @@ fun PostCard(navController: NavController, kartinka: String, avatar: String, nam
                 }
                 val state = painter.state
                 if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-                    CircularProgressIndicator(color = MaterialTheme.colors.primary)
+                    Box(modifier = Modifier.shimmer()
+                        .background(Color.Gray)
+                    ){
+
+                    }
                 } else {
                     SubcomposeAsyncImageContent()
                 }

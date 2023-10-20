@@ -1,5 +1,7 @@
 package com.example.nastya_app
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -11,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -42,6 +45,7 @@ import androidx.navigation.NavController
 
 @Composable
 fun Login(navController: NavController){
+    
 
 
     val context = LocalContext.current
@@ -123,11 +127,13 @@ fun Login(navController: NavController){
 
 
 
+
         Button(onClick = {
             if (emailid == email.value && passwordid == password.value){
                 navController.navigate("menu")
             }else{
-               navController.popBackStack()
+                Toast.makeText(context,"Invalid email or password",Toast.LENGTH_SHORT).show()
+
             }
                          },
             modifier = Modifier
@@ -151,3 +157,6 @@ fun Login(navController: NavController){
 
     }
 }
+
+
+

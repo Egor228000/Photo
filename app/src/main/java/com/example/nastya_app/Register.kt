@@ -58,7 +58,7 @@ fun Register(navController: NavController){
 
     var passwordValue = remember { mutableStateOf(TextFieldValue()) }
     val password = store.getAccetToken_2.collectAsState(initial = "")
-    var next = true
+    var next =  emailValue.value.text.isNotEmpty() && emailValue.value.text.contains('@') && emailValue.value.text.length >=5 && passwordValue.value.text.isNotEmpty()
 
 
     Column(

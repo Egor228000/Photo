@@ -17,12 +17,14 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -31,21 +33,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 
 @Composable
 fun Login(navController: NavController){
-    var email by remember {
+
+
+    val context = LocalContext.current
+    val store = UserStore(context)
+
+    val email = store.getAccetToken_1.collectAsState(initial = "")
+
+    val password = store.getAccetToken_2.collectAsState(initial = "")
+
+    var emailid by remember {
         mutableStateOf("")
     }
-    var password by remember {
+    var passwordid by remember {
         mutableStateOf("")
     }
-    var problem = false
-    var next = true
+
 
     Column(
         Modifier
@@ -71,8 +83,8 @@ fun Login(navController: NavController){
             , modifier = Modifier.padding(start = 16.dp)
         )
         OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
+            value = emailid,
+            onValueChange = { emailid = it },
             modifier = Modifier
                 .padding(start = 16.dp, top = 50.dp, end = 16.dp)
                 .fillMaxWidth(1f)
@@ -86,16 +98,12 @@ fun Login(navController: NavController){
             ),
             singleLine = true,
             shape = RoundedCornerShape(0 ),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                if (problem){
-                    Color.Red}else{
-                    Color.Black}),
             placeholder = { Text(text = "Email")}
         )
 
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
+            value = passwordid,
+            onValueChange = { passwordid = it },
             modifier = Modifier
                 .padding(start = 16.dp, top = 20.dp, end = 16.dp)
                 .fillMaxWidth(1f)
@@ -112,19 +120,21 @@ fun Login(navController: NavController){
             placeholder = { Text(text = "Password")}
         )
 
-        /*if (email == "@" && password.length == 7){
-            next = true
-            problem = false
-        }else{
-            problem = true
-        }*/
 
-        Button(onClick = {navController.navigate("menu")},
+
+
+        Button(onClick = {
+            if (emailid == email.value && passwordid == password.value){
+                navController.navigate("menu")
+            }else{
+               navController.popBackStack()
+            }
+                         },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(16.dp)
                 .height(52.dp),
-            colors =  ButtonDefaults.buttonColors(Color.Black), enabled = next) {
+            colors =  ButtonDefaults.buttonColors(Color.Black)) {
             Text(
                 text = "LOG IN",
                 style = TextStyle(

@@ -16,6 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val systemUiController = rememberSystemUiController()
+            // status bar
             SideEffect {
                 systemUiController.setStatusBarColor(
                     color = Color.White,

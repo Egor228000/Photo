@@ -1,11 +1,20 @@
 package com.example.nastya_app
 
+import android.content.ContentValues
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -20,6 +29,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -35,21 +45,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 @Composable
-fun Image(navController: NavController, kartinka: String){
+fun Images(navController: NavController, kartinka: String){
     BoxWithConstraints(
         Modifier
-        .background(Color.White)
-                .fillMaxWidth()
+            .background(Color.White)
+            .fillMaxWidth()
           ) {
         var scale by remember {
             mutableFloatStateOf(1f)
@@ -60,7 +75,6 @@ fun Image(navController: NavController, kartinka: String){
 
         val state = rememberTransformableState { zoomChange, panChange, rotationChange ->
             scale = (scale * zoomChange).coerceIn(1f, 9f)
-
             val extraWidth = (scale - 1) * constraints.maxWidth
             val extraHeight = (scale - 1) * constraints.maxHeight
 
@@ -80,6 +94,7 @@ fun Image(navController: NavController, kartinka: String){
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .fillMaxHeight(1f)
+
                 .graphicsLayer {
                     scaleX = scale
                     scaleY = scale
@@ -92,9 +107,15 @@ fun Image(navController: NavController, kartinka: String){
 
             val state = painter.state
             if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-                Box(modifier = Modifier.shimmer()
-                    .background(Color.Gray)
+                Column(verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .shimmer()
+                        .background(Color.Gray)
+
                 ){
+                    Text(text = "Loading",
+                        fontSize = 23.sp)
 
                 }
             } else {
@@ -109,6 +130,15 @@ fun Image(navController: NavController, kartinka: String){
 
             }
         }
+        Column(horizontalAlignment = Alignment.End,
+            modifier = Modifier.fillMaxWidth()) {
+            IconButton(onClick = { }) {
+                Icon(painter = painterResource(id = R.drawable.baseline_download_24),
+                    contentDescription = "")
+
+            }
+        }
 
     }
 }
+

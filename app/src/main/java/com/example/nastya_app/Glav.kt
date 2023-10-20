@@ -55,7 +55,7 @@ fun Glav(navController: NavController){
 
 
 
-                Column(Modifier.padding(start = 60.dp, top = 250.dp)) {
+                Column(Modifier.padding(start = 100.dp, top = 250.dp)) {
                     Image(
                         painter = painterResource(id = R.drawable.logo),
                         contentDescription = "image description",
@@ -64,7 +64,7 @@ fun Glav(navController: NavController){
                     )
                 }
             Row {
-                Column(Modifier.padding(start = 60.dp, top = 250.dp)) {
+                Column(Modifier.padding(start = 100.dp, top = 250.dp)) {
                     Image(
                         painter = painterResource(id = R.drawable.logo_two),
                         contentDescription = "image description",

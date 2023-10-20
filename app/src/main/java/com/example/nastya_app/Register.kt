@@ -20,14 +20,17 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -35,21 +38,28 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun Register(navController: NavController){
-    var email by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
-    var problem = false
+
+    val context = LocalContext.current
+    val store = UserStore(context)
+
+    var emailValue = remember { mutableStateOf(TextFieldValue()) }
+    val email = store.getAccetToken_1.collectAsState(initial = "")
+
+    var passwordValue = remember { mutableStateOf(TextFieldValue()) }
+    val password = store.getAccetToken_2.collectAsState(initial = "")
     var next = true
+
 
     Column(
         Modifier
@@ -75,8 +85,8 @@ fun Register(navController: NavController){
             , modifier = Modifier.padding(start = 16.dp)
         )
             OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
+                value = emailValue.value,
+                onValueChange = { emailValue.value = it},
                 modifier = Modifier
                     .padding(start = 16.dp, top = 50.dp, end = 16.dp)
                     .fillMaxWidth(1f)
@@ -90,16 +100,12 @@ fun Register(navController: NavController){
                 ),
                 singleLine = true,
                 shape = RoundedCornerShape(0 ),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    if (problem){
-                    Color.Red}else{
-                    Color.Black}),
                 placeholder = { Text(text = "Email")}
             )
 
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = passwordValue.value,
+                onValueChange = { passwordValue.value = it },
                 modifier = Modifier
                     .padding(start = 16.dp, top = 20.dp, end = 16.dp)
                     .fillMaxWidth(1f)
@@ -116,14 +122,14 @@ fun Register(navController: NavController){
                 placeholder = { Text(text = "Password")}
             )
 
-        /*if (email == "@" && password.length == 7){
-            next = true
-            problem = false
-        }else{
-            problem = true
-        }*/
 
-        Button(onClick = { navController.navigate("login")},
+        Button(onClick = {
+            CoroutineScope(Dispatchers.IO).launch {
+                store.saveToken_1(emailValue.value.text)
+                store.saveToken_2(passwordValue.value.text)
+            }
+
+            navController.navigate("login") },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(16.dp)

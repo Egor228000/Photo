@@ -48,6 +48,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import com.example.nastya_app.Images
 
 
 @Composable
@@ -131,7 +132,7 @@ fun MenuGraph(navController: NavHostController) {
         NavHost(
 
             navController = navController,
-            startDestination = "glav",
+            startDestination = "register",
             Modifier.padding(padding),
             enterTransition = { EnterTransition.None},
             exitTransition = {ExitTransition.None}
@@ -167,8 +168,7 @@ fun MenuGraph(navController: NavHostController) {
             }
 
 
-            composable("menu",
-                ) {
+            composable("menu") {
                 Menu(navController = navController)
 
             }
@@ -203,7 +203,7 @@ fun MenuGraph(navController: NavHostController) {
             ) { backStackEntry ->
                 val kartinka = backStackEntry.arguments?.getString("kartinka") ?: ""
 
-                com.example.nastya_app.Image(navController = navController, kartinka)
+                Images(navController = navController, kartinka)
             }
             composable("plus") {
                 Plus(navController = navController)

@@ -61,10 +61,9 @@ fun Profile(navController: NavController) {
 
         Column(horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()) {
-
             SubcomposeAsyncImage(
-                model = "",
-                contentDescription = "https://firebasestorage.googleapis.com/v0/b/sanatoriums.appspot.com/o/profile6.jpeg?alt=media&token=24a13c3c-5778-4669-8419-241adbfa25a8",
+                model = "https://firebasestorage.googleapis.com/v0/b/sanatoriums.appspot.com/o/profile5.jpeg?alt=media&token=1cc5f2e3-d07a-4db5-87a9-2af06bb6a1cb",
+                contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(top = 80.dp)
@@ -72,20 +71,23 @@ fun Profile(navController: NavController) {
                     .height(128.dp)
                     .clip(shape = RoundedCornerShape(50))
 
-            ) {
 
+            )
+            {
 
                 val state = painter.state
                 if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
                     Box(modifier = Modifier.shimmer()
                         .background(Color.Gray)
-                       ){
+                    ){
 
                     }
                 } else {
                     SubcomposeAsyncImageContent()
                 }
             }
+
+
             Text(
                 text = "Jane",
                 style = TextStyle(

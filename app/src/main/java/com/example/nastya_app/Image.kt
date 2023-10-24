@@ -1,5 +1,6 @@
 package com.example.nastya_app
 
+import android.app.DownloadManager
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
@@ -8,8 +9,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
@@ -61,6 +64,8 @@ import java.io.OutputStream
 
 @Composable
 fun Images(navController: NavController, kartinka: String){
+    val context = LocalContext.current
+
     BoxWithConstraints(
         Modifier
             .background(Color.White)
@@ -74,7 +79,7 @@ fun Images(navController: NavController, kartinka: String){
         }
 
         val state = rememberTransformableState { zoomChange, panChange, rotationChange ->
-            scale = (scale * zoomChange).coerceIn(1f, 9f)
+            scale = (scale * zoomChange).coerceIn(1f, 5f)
             val extraWidth = (scale - 1) * constraints.maxWidth
             val extraHeight = (scale - 1) * constraints.maxHeight
 
@@ -103,6 +108,7 @@ fun Images(navController: NavController, kartinka: String){
                 }
                 .transformable(state)
 
+
         ) {
 
             val state = painter.state
@@ -116,6 +122,7 @@ fun Images(navController: NavController, kartinka: String){
                 ){
                     Text(text = "Loading",
                         fontSize = 23.sp)
+
 
                 }
             } else {
@@ -132,7 +139,20 @@ fun Images(navController: NavController, kartinka: String){
         }
         Column(horizontalAlignment = Alignment.End,
             modifier = Modifier.fillMaxWidth()) {
-            IconButton(onClick = { }) {
+            IconButton(onClick = {
+                val uri = Uri.parse(kartinka)
+                val request = DownloadManager.Request(uri)
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, uri.lastPathSegment)
+
+                val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                val downloadId = downloadManager.enqueue(request)
+                val query = DownloadManager.Query()
+                    .setFilterById(downloadId)
+                Toast.makeText(context, "Download", Toast.LENGTH_SHORT).show()
+
+
+            }) {
                 Icon(painter = painterResource(id = R.drawable.baseline_download_24),
                     contentDescription = "")
 

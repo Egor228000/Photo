@@ -1,9 +1,12 @@
 package com.example.nastya_app
 
+import android.content.Intent
 import android.widget.GridLayout
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -222,15 +226,27 @@ fun Menu(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SizeCard(navController: NavController, kartinka: String, size_height: Dp){
+    val context = LocalContext.current
     SubcomposeAsyncImage(
         model = kartinka,
         contentDescription = "",
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .width(167.dp)
-            .height(size_height).clickable { navController.navigate("image/${URLEncoder.encode(kartinka, "UTF-8")}") }
+            .height(size_height)
+            .combinedClickable(
+                onClick = { navController.navigate("image/${URLEncoder.encode(kartinka, "UTF-8")}")},
+                onLongClick = {  val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, kartinka)
+                    type = "text/plain"
+                }
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    context.startActivity(shareIntent)},
+            )
 
     ) {
 
@@ -247,8 +263,11 @@ fun SizeCard(navController: NavController, kartinka: String, size_height: Dp){
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PostCard(navController: NavController, kartinka: String, avatar: String, name: String, email: String) {
+    val context = LocalContext.current
+
     Column {
         SubcomposeAsyncImage(
             model = kartinka,
@@ -257,7 +276,17 @@ fun PostCard(navController: NavController, kartinka: String, avatar: String, nam
             modifier = Modifier
                 .width(343.dp)
                 .padding(6.dp)
-                .height(343.dp).clickable { navController.navigate("image/${URLEncoder.encode(kartinka, "UTF-8")}") }
+                .height(343.dp)
+                .combinedClickable(
+                    onClick = { navController.navigate("image/${URLEncoder.encode(kartinka, "UTF-8")}")},
+                    onLongClick = {  val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, kartinka)
+                        type = "text/plain"
+                    }
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        context.startActivity(shareIntent)},
+                )
         ) {
             Box {
 

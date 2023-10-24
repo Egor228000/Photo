@@ -41,7 +41,6 @@ import java.net.URLEncoder
 
 @Composable
 fun Plus(navController: NavController) {
-    val kartinka = "https://firebasestorage.googleapis.com/v0/b/sanatoriums.appspot.com/o/s1200.webp?alt=media&token=93c82678-94f1-4218-99af-b8974d128a59"
     Column(
         Modifier
             .fillMaxSize()

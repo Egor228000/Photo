@@ -1,8 +1,11 @@
 package com.example.nastya_app
 
+import android.content.Intent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -243,8 +247,10 @@ fun Profile(navController: NavController) {
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SizeeCard(navController: NavController, kartinka: String, size_height: Dp) {
+    val context = LocalContext.current
     SubcomposeAsyncImage(
         model = kartinka,
         contentDescription = "",
@@ -252,7 +258,16 @@ fun SizeeCard(navController: NavController, kartinka: String, size_height: Dp) {
         modifier = Modifier
             .width(167.dp)
             .height(size_height)
-            .clickable { navController.navigate("image/${URLEncoder.encode(kartinka, "UTF-8")}") }
+            .combinedClickable(
+                onClick = { navController.navigate("image/${URLEncoder.encode(kartinka, "UTF-8")}")},
+                onLongClick = {  val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, kartinka)
+                    type = "text/plain"
+                }
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    context.startActivity(shareIntent)},
+            )
 
     ) {
 

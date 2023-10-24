@@ -1,8 +1,12 @@
 package com.example.nastya_app
 
+import android.content.Context
+import android.content.Intent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -47,6 +52,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
@@ -56,6 +62,7 @@ import java.net.URLEncoder
 
 data class searchCarding(val navController: NavController.Companion, val kartinka: String, val id: String)
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Search(navController: NavController){
 
@@ -102,6 +109,7 @@ fun Search(navController: NavController){
     val filteredList = searchList.filter { item ->
         item.id.contains(search.lowercase(), ignoreCase = true)
     }
+
 
 
 
@@ -166,6 +174,7 @@ fun Search(navController: NavController){
 
             items(filteredList){item ->
 
+                val context = LocalContext.current
                 SubcomposeAsyncImage(
                     model = item.kartinka,
                     contentDescription = "",
@@ -174,7 +183,17 @@ fun Search(navController: NavController){
                         .width(107.dp)
                         .height(107.dp)
                         .padding(10.dp)
-                        .clickable { navController.navigate("image/${URLEncoder.encode(item.kartinka, "UTF-8")}") }
+                        .combinedClickable(
+                            onClick = { navController.navigate("image/${URLEncoder.encode(item.kartinka, "UTF-8")}")},
+                            onLongClick = {  val sendIntent: Intent = Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_TEXT, item.kartinka)
+                                type = "text/plain"
+                            }
+                                val shareIntent = Intent.createChooser(sendIntent, null)
+                                context.startActivity(shareIntent)},
+                        )
+
 
 
                 )
@@ -188,7 +207,7 @@ fun Search(navController: NavController){
 
                         }
                     } else {
-                        SubcomposeAsyncImageContent()
+                            SubcomposeAsyncImageContent()
                     }
                 }
 

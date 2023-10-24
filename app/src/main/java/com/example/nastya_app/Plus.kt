@@ -8,9 +8,14 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -20,14 +25,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import androidx.navigation.NavController
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
+import com.valentinilk.shimmer.shimmer
 import java.io.ByteArrayOutputStream
+import java.net.URLEncoder
 
 @Composable
 fun Plus(navController: NavController) {
+    val kartinka = "https://firebasestorage.googleapis.com/v0/b/sanatoriums.appspot.com/o/s1200.webp?alt=media&token=93c82678-94f1-4218-99af-b8974d128a59"
     Column(
         Modifier
             .fillMaxSize()
@@ -38,48 +52,11 @@ fun Plus(navController: NavController) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            Image(
-                painter = painterResource(R.drawable.image1),
-                contentDescription = "Image 1",
-                modifier = Modifier
-                    .clickable {
-                        shareImage(context, R.drawable.image1)
-                    }
-                    .fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
 
-            Image(
-                painter = painterResource(R.drawable.image2),
-                contentDescription = "Image 2",
-                modifier = Modifier
-                    .clickable {
-                        shareImage(context, R.drawable.image2)
-                    }
-                    .fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
 
-            Image(
-                painter = painterResource(R.drawable.image3),
-                contentDescription = "Image 3",
-                modifier = Modifier
-                    .clickable {
-                        shareImage(context, R.drawable.image3)
-                    }
-                    .fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
+
         }
     }
 }
 
 
-fun shareImage(context: Context, drawabled: Int){
-    val outputStream = ByteArrayOutputStream()
-    val bitmap: Bitmap = BitmapFactory.decodeResource(context.resources, drawabled)
-    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-    val path: String = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Image", null)
-    val imageUri: Uri = Uri.parse(path)
-    val intent = intent(intent.AC=)
-}

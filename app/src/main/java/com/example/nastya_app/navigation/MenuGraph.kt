@@ -132,7 +132,7 @@ fun MenuGraph(navController: NavHostController) {
         NavHost(
 
             navController = navController,
-            startDestination = "plus",
+            startDestination = "glav",
             Modifier.padding(padding),
             enterTransition = { EnterTransition.None},
             exitTransition = {ExitTransition.None}

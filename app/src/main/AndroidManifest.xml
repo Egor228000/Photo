@@ -22,9 +22,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/insta"
+        android:icon="@drawable/logo_avatar"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/insta"
+        android:roundIcon="@drawable/logo_avatar"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nastya_app"
         tools:targetApi="31">

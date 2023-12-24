@@ -56,7 +56,6 @@ dependencies {
     implementation ("androidx.compose.runtime:runtime-saveable:1.5.4")
 
     implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
-    implementation ("com.github.skydoves:balloon-compose:1.6.1")
 
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
     implementation ("androidx.navigation:navigation-compose:2.7.4")

@@ -1,5 +1,9 @@
 package com.example.nastya_app
 
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -47,6 +51,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun Register(navController: NavController){
 
@@ -103,6 +108,8 @@ fun Register(navController: NavController){
                 placeholder = { Text(text = "Email")}
             )
 
+
+
             OutlinedTextField(
                 value = passwordValue.value,
                 onValueChange = { passwordValue.value = it },
@@ -148,8 +155,6 @@ fun Register(navController: NavController){
             )
 
         }
-
     }
-
 }
 

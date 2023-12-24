@@ -5,7 +5,7 @@
 - Downloading images
 - Registration with login and password saved
 - Sending messages to the chat
-## Стэк технологий
+## Technology Stack
 - [Jatpack Compose](https://developer.android.com/jetpack/compose) - to create a user interface
 - [DataStore](https://developer.android.com/jetpack/androidx/releases/datastore) - to save data
 - [SystemUiController](https://google.github.io/accompanist/systemuicontroller/) - to change the  status bar
